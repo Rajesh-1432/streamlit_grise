@@ -1,0 +1,14 @@
+langchain
+langchain_community
+langchain_core
+openai
+langchain_openai
+PyPDF2
+streamlit
+python-dotenv
+python-docx
+langchain_google_genai
+google-generativeai
+pandas
+faiss-cpu
+xlsxwriter
