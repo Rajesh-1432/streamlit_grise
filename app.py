@@ -54,7 +54,7 @@ st.markdown(
     }
 
     /* Form submit buttons - specifically target them */
-    .stForm button, .stForm button span {
+    .stForm button, .stForm form_submit_button, .stForm button span {
         background-color: #000000 !important;
         color: #ffffff !important;
     }
@@ -326,7 +326,6 @@ def main():
     if input_method == "Upload File":
         uploaded_files = st.file_uploader(" ", type=['pdf', 'txt', 'docx'], accept_multiple_files=True)
         if uploaded_files:
-            # Using st.form for the Generate Test Scripts button with unique ID
             with st.form(key="generate_form"):
                 submit_button = st.form_submit_button("Generate Test Scripts")
                 if submit_button:
