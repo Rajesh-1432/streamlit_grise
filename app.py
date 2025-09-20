@@ -24,9 +24,15 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API")
 st.markdown(
     """
     <style>
-    /* Set app background to white */
+    /* Set app background to white and ensure text is black */
     .stApp {
-        background-color: #ffffff; /* Pure white */
+        background-color: #ffffff !important; /* Pure white */
+        color: #000000 !important; /* Black text */
+    }
+    
+    /* Ensure all text elements are black on white background */
+    .stApp * {
+        color: #000000 !important;
     }
 
     /* Title */
@@ -34,7 +40,7 @@ st.markdown(
         text-align: center;
         font-size: 2em;
         font-weight: 600;
-        color: #000000; /* Black */
+        color: #000000 !important; /* Black */
         margin-bottom: 25px;
     }
 
@@ -45,15 +51,16 @@ st.markdown(
         width: 200px;   /* Fixed width instead of % */
         padding: 10px 20px;
         font-weight: 600;
-        background-color: #000000; /* Black */
-        color: #ffffff; /* White */
+        background-color: #000000 !important; /* Black */
+        color: #ffffff !important; /* White */
         border: none;
         border-radius: 6px;
         transition: background-color 0.3s, transform 0.2s;
     }
 
     div.stButton > button:hover {
-        background-color: #333333; /* Dark Gray */
+        background-color: #333333 !important; /* Dark Gray */
+        color: #ffffff !important; /* White */
         transform: translateY(-2px);
     }
 
@@ -63,8 +70,8 @@ st.markdown(
         width: 250px;   /* Fixed width */
         margin: 25px auto;
         padding: 10px 20px;
-        color: #ffffff;
-        background-color: #000000;
+        color: #ffffff !important;
+        background-color: #000000 !important;
         text-align: center;
         border-radius: 6px;
         text-decoration: none;
@@ -74,9 +81,25 @@ st.markdown(
     }
 
     .download-button:hover {
-        background-color: #333333;
+        background-color: #333333 !important;
+        color: #ffffff !important;
         transform: translateY(-2px);
-        color: #ffffff;
+        text-decoration: none;
+    }
+    
+    /* Ensure radio buttons and other form elements have proper contrast */
+    .stRadio > div {
+        color: #000000 !important;
+    }
+    
+    /* File uploader text */
+    .stFileUploader > div {
+        color: #000000 !important;
+    }
+    
+    /* Warning and success messages */
+    .stAlert {
+        color: #000000 !important;
     }
     </style>
     """,
