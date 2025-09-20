@@ -14,11 +14,9 @@ from dotenv import load_dotenv
 from testscripts import script
 import base64
 
-
 # Initialize environment and API key
 load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API")
-
 
 # === UI Styling (Black & White Only) ===
 st.markdown(
@@ -44,7 +42,7 @@ st.markdown(
         margin-bottom: 25px;
     }
 
-    /* Primary buttons, including file uploader and Streamlit buttons */
+    /* Primary buttons, excluding the Generate Test Scripts button */
     button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
         background-color: #000000 !important; /* Black background */
         color: #ffffff !important;           /* White text */
@@ -98,6 +96,12 @@ st.markdown(
     .stAlert {
         color: #000000 !important;
     }
+
+    /* Fix specifically for the Generate Test Scripts button */
+    button:has(span:contains("Generate Test Scripts")) {
+        color: #ffffff !important; /* Ensure white text */
+        background-color: #000000 !important; /* Black background */
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -106,19 +110,9 @@ st.markdown(
 # === Functions ===
 def scrolling_headline(state, placeholder, headline_text: str):
     if state:
-        # Scrolling effect in black & white
         html_code = f"""
-        <div style="
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-            box-sizing: border-box;
-        ">
-            <marquee scrollamount="5" behavior="scroll" direction="right" style="
-                font-size: 1em;
-                color: #000000; /* Black text */
-                font-weight: bold;
-            ">
+        <div style="overflow: hidden; white-space: nowrap; width: 100%; box-sizing: border-box;">
+            <marquee scrollamount="5" behavior="scroll" direction="right" style="font-size:1em;color:#000000;font-weight:bold;">
                 {headline_text}
             </marquee>
         </div>
@@ -327,54 +321,57 @@ def main():
     if input_method == "Upload File":
         uploaded_files = st.file_uploader(" ", type=['pdf', 'txt', 'docx'], accept_multiple_files=True)
         if uploaded_files:
-            if st.button("Generate Test Scripts"):
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    if len(uploaded_files) == 1:
-                        uploaded_file = uploaded_files[0]
-                        file_base_name = os.path.splitext(uploaded_file.name)[0]
-                        excel_path = process_file(uploaded_file, reference_text, temp_dir, file_base_name)
-                        if excel_path:
-                            with open(excel_path, 'rb') as f:
-                                file_data = f.read()
-                                b64 = base64.b64encode(file_data).decode()
-                            st.markdown(
-                                f"""
-                                <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" 
-                                download="{os.path.basename(excel_path)}" class="download-button">
-                                Download {os.path.basename(excel_path)}
-                                </a>
-                                """,
-                                unsafe_allow_html=True
-                            )
-                        else:
-                            st.warning("Failed to generate the test script.")
-                    else:
-                        generated_excel_paths = []
-                        for uploaded_file in uploaded_files:
+            # Using st.form for the Generate Test Scripts button with unique ID
+            with st.form(key="generate_form"):
+                submit_button = st.form_submit_button("Generate Test Scripts")
+                if submit_button:
+                    with tempfile.TemporaryDirectory() as temp_dir:
+                        if len(uploaded_files) == 1:
+                            uploaded_file = uploaded_files[0]
                             file_base_name = os.path.splitext(uploaded_file.name)[0]
                             excel_path = process_file(uploaded_file, reference_text, temp_dir, file_base_name)
                             if excel_path:
-                                generated_excel_paths.append(excel_path)
-
-                        if generated_excel_paths:
-                            zip_file_path = os.path.join(temp_dir, "Generated_Test_Scripts.zip")
-                            with zipfile.ZipFile(zip_file_path, 'w') as zipf:
-                                for file_path in generated_excel_paths:
-                                    zipf.write(file_path, os.path.basename(file_path))
-                            with open(zip_file_path, 'rb') as f:
-                                zip_data = f.read()
-                                zip_b64 = base64.b64encode(zip_data).decode()
-                            st.markdown(
-                                f"""
-                                <a href="data:application/zip;base64,{zip_b64}" 
-                                download="Generated_Test_Scripts.zip" class="download-button">
-                                Download All Generated Test Scripts
-                                </a>
-                                """,
-                                unsafe_allow_html=True
-                            )
+                                with open(excel_path, 'rb') as f:
+                                    file_data = f.read()
+                                    b64 = base64.b64encode(file_data).decode()
+                                st.markdown(
+                                    f"""
+                                    <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" 
+                                    download="{os.path.basename(excel_path)}" class="download-button">
+                                    Download {os.path.basename(excel_path)}
+                                    </a>
+                                    """,
+                                    unsafe_allow_html=True
+                                )
+                            else:
+                                st.warning("Failed to generate the test script.")
                         else:
-                            st.warning("No test scripts were generated.")
+                            generated_excel_paths = []
+                            for uploaded_file in uploaded_files:
+                                file_base_name = os.path.splitext(uploaded_file.name)[0]
+                                excel_path = process_file(uploaded_file, reference_text, temp_dir, file_base_name)
+                                if excel_path:
+                                    generated_excel_paths.append(excel_path)
+
+                            if generated_excel_paths:
+                                zip_file_path = os.path.join(temp_dir, "Generated_Test_Scripts.zip")
+                                with zipfile.ZipFile(zip_file_path, 'w') as zipf:
+                                    for file_path in generated_excel_paths:
+                                        zipf.write(file_path, os.path.basename(file_path))
+                                with open(zip_file_path, 'rb') as f:
+                                    zip_data = f.read()
+                                    zip_b64 = base64.b64encode(zip_data).decode()
+                                st.markdown(
+                                    f"""
+                                    <a href="data:application/zip;base64,{zip_b64}" 
+                                    download="Generated_Test_Scripts.zip" class="download-button">
+                                    Download All Generated Test Scripts
+                                    </a>
+                                    """,
+                                    unsafe_allow_html=True
+                                )
+                            else:
+                                st.warning("No test scripts were generated.")
 
     elif input_method == "Upload ZIP File":
         uploaded_zip = st.file_uploader(" ", type='zip')
