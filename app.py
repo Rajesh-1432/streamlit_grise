@@ -86,8 +86,12 @@ st.markdown(
     }
 
     /* Radio buttons & file uploader label */
-    .stRadio > div, .stFileUploader > label {
+    .stRadio > div{
         color: #000000 !important;
+    }
+
+    .stFileUploader > label {
+        color: #ffffff !important;
     }
 
     /* Alerts */
