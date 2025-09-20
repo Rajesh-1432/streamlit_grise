@@ -20,87 +20,213 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API")
 
 
-# === UI Styling (Black & White Only) ===
+# === Enhanced UI Styling ===
 st.markdown(
     """
     <style>
-    /* Title */
+    /* Global background and text */
+    .stApp {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    /* Main container */
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        max-width: 1000px;
+    }
+
+    /* Title styling */
     .center-title {
         text-align: center;
-        font-size: 2em;
-        font-weight: 600;
-        color: #000000; /* Black */
-        margin-bottom: 25px;
+        font-size: 2.8em;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 2rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 1rem 0;
+        border-bottom: 3px solid #3498db;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     /* Primary buttons */
     div.stButton > button {
         display: block;
-        margin: 0 auto;
-        width: 40%;
-        padding: 12px;
+        margin: 1rem auto;
+        width: 300px !important;
+        min-height: 50px;
+        padding: 0.75rem 1.5rem;
         font-weight: 600;
-        background-color: #000000; /* Black */
-        color: #ffffff; /* White */
+        font-size: 1.1em;
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: #ffffff;
         border: none;
-        border-radius: 6px;
-        transition: background-color 0.3s, transform 0.2s;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        cursor: pointer;
     }
 
     div.stButton > button:hover {
-        background-color: #333333; /* Dark Gray */
+        background: linear-gradient(135deg, #2980b9 0%, #1f639a 100%);
         transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
     }
 
     div.stButton > button:focus, 
     div.stButton > button:active {
         outline: none;
-        background-color: #000000;
-        color: #ffffff;
+        transform: translateY(0px);
+        box-shadow: 0 2px 10px rgba(52, 152, 219, 0.3);
     }
 
     /* Download button */
     .download-button {
         display: block;
-        width: 65%;
-        margin: 25px auto;
-        padding: 0.7em 1em;
+        width: 350px;
+        margin: 2rem auto;
+        padding: 1rem 2rem;
         color: #ffffff;
-        background-color: #000000; /* Black */
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
         text-align: center;
-        border-radius: 6px;
+        border-radius: 25px;
         text-decoration: none;
-        font-size: 1.05em;
+        font-size: 1.2em;
         font-weight: 600;
-        transition: background-color 0.3s, transform 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        border: none;
     }
 
     .download-button:hover {
-        background-color: #333333; /* Dark Gray */
+        background: linear-gradient(135deg, #229954 0%, #27ae60 100%);
         transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
         color: #ffffff;
+        text-decoration: none;
     }
 
-    /* Radio buttons */
-    .stRadio > label {
-        font-weight: 500;
-        color: #000000; /* Black */
+    /* Radio buttons container */
+    .stRadio > div {
+        background: #ffffff;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin: 1rem 0;
+    }
+
+    .stRadio > div > label {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 1.1em;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    /* Radio button options */
+    .stRadio div[role="radiogroup"] > label {
+        background: #f8f9fa;
+        margin: 0.5rem 0;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .stRadio div[role="radiogroup"] > label:hover {
+        background: #e3f2fd;
+        border-color: #3498db;
     }
 
     /* File uploader */
     section[data-testid="stFileUploader"] {
-        border: 2px dashed #000000; /* Black */
-        background-color: #ffffff; /* White */
-        border-radius: 6px;
-        padding: 15px;
+        border: 2px dashed #3498db;
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1rem 0;
+        transition: all 0.3s ease;
     }
 
-    /* Alerts */
-    .stAlert {
-        border-radius: 6px;
-        color: #000000; /* Black */
-        background-color: #f5f5f5; /* Light Gray */
-        border: 1px solid #000000;
+    section[data-testid="stFileUploader"]:hover {
+        border-color: #2980b9;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+    }
+
+    .uploadedFile {
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 0.5rem;
+        margin: 0.25rem 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Success/Info/Warning messages */
+    .stSuccess {
+        background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        border: 1px solid #27ae60;
+        border-radius: 10px;
+        color: #155724;
+    }
+
+    .stInfo {
+        background: linear-gradient(135deg, #cce7ff 0%, #b3daff 100%);
+        border: 1px solid #3498db;
+        border-radius: 10px;
+        color: #0c5460;
+    }
+
+    .stWarning {
+        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        border: 1px solid #f39c12;
+        border-radius: 10px;
+        color: #856404;
+    }
+
+    /* Progress indicators */
+    .stProgress > div > div > div > div {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    }
+
+    /* Scrolling headline improvements */
+    .headline-container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        border-radius: 10px;
+        padding: 1rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border-left: 4px solid #3498db;
+    }
+
+    /* Sidebar styling */
+    .css-1d391kg {
+        background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    }
+
+    /* Hide Streamlit menu and footer */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    
+    /* Custom spacing */
+    .custom-spacing {
+        margin: 2rem 0;
+    }
+    
+    /* File counter styling */
+    .file-counter {
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        color: #1976d2;
+        font-weight: 600;
+        text-align: center;
+        margin: 1rem 0;
+        border: 1px solid #2196f3;
     }
     </style>
     """,
@@ -111,26 +237,21 @@ st.markdown(
 # === Functions ===
 def scrolling_headline(state, placeholder, headline_text: str):
     if state:
-        # Scrolling effect in black & white
+        # Enhanced scrolling effect
         html_code = f"""
-        <div style="
-            overflow: hidden;
-            white-space: nowrap;
-            width: 100%;
-            box-sizing: border-box;
-        ">
-            <marquee scrollamount="5" behavior="scroll" direction="right" style="
-                font-size: 1em;
-                color: #000000; /* Black text */
-                font-weight: bold;
+        <div class="headline-container" style="overflow: hidden; white-space: nowrap; width: 100%; box-sizing: border-box;">
+            <marquee scrollamount="4" behavior="scroll" direction="right" style="
+                font-size: 1.1em;
+                color: #2c3e50;
+                font-weight: 600;
             ">
-                {headline_text}
+                🚀 {headline_text} ⚡
             </marquee>
         </div>
         """
         placeholder.markdown(html_code, unsafe_allow_html=True)
     else:
-        placeholder.success(headline_text)
+        placeholder.success(f"✅ {headline_text}")
 
 
 def read_pdf(pdf_docs):
@@ -244,8 +365,8 @@ def convert_to_excel(test_scripts, file_path):
         summary_sheet_name = "Test Cases"
         summary_data = []
         workbook = writer.book
-        header_format = workbook.add_format({'bold': True, 'bg_color': '#DDDDDD'})  # Gray header
-        title_format = workbook.add_format({'bold': True, 'bg_color': '#FFFFFF', 'font_color': '#000000'})
+        header_format = workbook.add_format({'bold': True, 'bg_color': '#3498db', 'font_color': '#ffffff'})
+        title_format = workbook.add_format({'bold': True, 'bg_color': '#2c3e50', 'font_color': '#ffffff'})
 
         for i, (case_title, script_details) in enumerate(test_scripts.items(), start=1):
             steps = []
@@ -293,7 +414,7 @@ def process_file(uploaded_file, reference_text, output_directory, base_name=None
         uploaded_text += read_docx([uploaded_file])
 
     if not uploaded_text:
-        st.warning(f"Skipped empty or unsupported file: {file_name}")
+        st.warning(f"⚠️ Skipped empty or unsupported file: {file_name}")
         return None
 
     combined_text = uploaded_text + reference_text
@@ -307,32 +428,77 @@ def process_file(uploaded_file, reference_text, output_directory, base_name=None
         testscript[j] = script(uploaded_text, j)
 
     excel_path = os.path.join(output_directory, f"{base_name}.xlsx")
-    end_text = f"Test Script for {base_name} is generated"
+    end_text = f"Test Script for {base_name} completed successfully!"
     scrolling_headline(False, placeholder, end_text)
     convert_to_excel(testscript, excel_path)
     return excel_path
 
 
 def main():
-    st.markdown("<div class='center-title'>Test Script Generator</div>", unsafe_allow_html=True)
+    # Page configuration
+    st.set_page_config(
+        page_title="SAP Test Script Generator",
+        page_icon="🚀",
+        layout="wide",
+        initial_sidebar_state="collapsed"
+    )
+    
+    # Main title
+    st.markdown("<div class='center-title'>🚀 SAP Test Script Generator</div>", unsafe_allow_html=True)
+    
+    # Add some spacing
+    st.markdown("<div class='custom-spacing'></div>", unsafe_allow_html=True)
 
-    input_method = st.radio("Choose input method:", ("Upload File", "Upload ZIP File"))
+    # Input method selection with improved styling
+    st.markdown("### 📁 Choose Your Input Method")
+    input_method = st.radio(
+        "",
+        ("📄 Upload Individual Files", "📦 Upload ZIP File"),
+        help="Select how you want to upload your files for processing"
+    )
+    
+    # Directory setup
     references_directory = "References"
     output_directory = "Generated Excels"
     os.makedirs(output_directory, exist_ok=True)
 
+    # Load reference text
     reference_text = ""
-    reference_text += read_pdf_from_directory(references_directory)
-    reference_text += read_txt_from_directory(references_directory)
-    reference_text += read_docx_from_directory(references_directory)
+    if os.path.exists(references_directory):
+        reference_text += read_pdf_from_directory(references_directory)
+        reference_text += read_txt_from_directory(references_directory)
+        reference_text += read_docx_from_directory(references_directory)
+        
+        if reference_text:
+            understand_tone_and_language(reference_text)
+            st.info("📚 Reference files loaded successfully!")
 
-    if reference_text:
-        understand_tone_and_language(reference_text)
-
-    if input_method == "Upload File":
-        uploaded_files = st.file_uploader(" ", type=['pdf', 'txt', 'docx'], accept_multiple_files=True)
+    if input_method == "📄 Upload Individual Files":
+        st.markdown("### 📤 Upload Your Files")
+        st.markdown("*Supported formats: PDF, TXT, DOCX*")
+        
+        uploaded_files = st.file_uploader(
+            "", 
+            type=['pdf', 'txt', 'docx'], 
+            accept_multiple_files=True,
+            help="You can upload multiple files at once"
+        )
+        
         if uploaded_files:
-            if st.button("Generate Test Scripts"):
+            # Display file counter
+            st.markdown(f"""
+            <div class='file-counter'>
+                📊 {len(uploaded_files)} file(s) selected for processing
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # List uploaded files
+            with st.expander("📋 View Selected Files", expanded=False):
+                for i, file in enumerate(uploaded_files, 1):
+                    st.write(f"{i}. {file.name} ({file.size} bytes)")
+            
+            # Generate button
+            if st.button("🚀 Generate Test Scripts"):
                 with tempfile.TemporaryDirectory() as temp_dir:
                     if len(uploaded_files) == 1:
                         uploaded_file = uploaded_files[0]
@@ -346,84 +512,140 @@ def main():
                                 f"""
                                 <a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" 
                                 download="{os.path.basename(excel_path)}" class="download-button">
-                                Download {os.path.basename(excel_path)}
+                                📥 Download {os.path.basename(excel_path)}
                                 </a>
                                 """,
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.warning("Failed to generate the test script.")
+                            st.error("❌ Failed to generate the test script.")
                     else:
+                        # Progress tracking for multiple files
+                        progress_bar = st.progress(0)
+                        status_text = st.empty()
+                        
                         generated_excel_paths = []
-                        for uploaded_file in uploaded_files:
+                        for idx, uploaded_file in enumerate(uploaded_files):
+                            status_text.text(f"Processing file {idx + 1} of {len(uploaded_files)}: {uploaded_file.name}")
                             file_base_name = os.path.splitext(uploaded_file.name)[0]
                             excel_path = process_file(uploaded_file, reference_text, temp_dir, file_base_name)
                             if excel_path:
                                 generated_excel_paths.append(excel_path)
+                            progress_bar.progress((idx + 1) / len(uploaded_files))
+
+                        status_text.empty()
+                        progress_bar.empty()
 
                         if generated_excel_paths:
                             zip_file_path = os.path.join(temp_dir, "Generated_Test_Scripts.zip")
                             with zipfile.ZipFile(zip_file_path, 'w') as zipf:
                                 for file_path in generated_excel_paths:
                                     zipf.write(file_path, os.path.basename(file_path))
+                            
                             with open(zip_file_path, 'rb') as f:
                                 zip_data = f.read()
                                 zip_b64 = base64.b64encode(zip_data).decode()
+                            
+                            st.success(f"✅ Successfully generated {len(generated_excel_paths)} test scripts!")
                             st.markdown(
                                 f"""
                                 <a href="data:application/zip;base64,{zip_b64}" 
                                 download="Generated_Test_Scripts.zip" class="download-button">
-                                Download All Generated Test Scripts
+                                📥 Download All Generated Test Scripts
                                 </a>
                                 """,
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.warning("No test scripts were generated.")
+                            st.error("❌ No test scripts were generated.")
 
-    elif input_method == "Upload ZIP File":
-        uploaded_zip = st.file_uploader(" ", type='zip')
+    elif input_method == "📦 Upload ZIP File":
+        st.markdown("### 📦 Upload ZIP File")
+        st.markdown("*Upload a ZIP file containing your PDF, TXT, or DOCX files*")
+        
+        uploaded_zip = st.file_uploader("", type='zip')
+        
         if uploaded_zip:
-            if st.button("Generate Test Scripts"):
+            st.markdown(f"""
+            <div class='file-counter'>
+                📦 ZIP file ready: {uploaded_zip.name} ({uploaded_zip.size} bytes)
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("🚀 Generate Test Scripts"):
                 with tempfile.TemporaryDirectory() as temp_dir:
+                    # Extract ZIP file
                     with zipfile.ZipFile(uploaded_zip, 'r') as zip_ref:
                         zip_ref.extractall(temp_dir)
+                        extracted_files = zip_ref.namelist()
+                    
+                    st.info(f"📂 Extracted {len(extracted_files)} files from ZIP")
 
+                    # Find supported files
                     supported_extensions = ('*.pdf', '*.txt', '*.docx')
                     uploaded_files = []
                     for ext in supported_extensions:
                         uploaded_files.extend(glob.glob(os.path.join(temp_dir, ext)))
 
                     if uploaded_files:
+                        st.success(f"🔍 Found {len(uploaded_files)} supported files")
+                        
+                        # Progress tracking
+                        progress_bar = st.progress(0)
+                        status_text = st.empty()
+                        
                         generated_excel_paths = []
-                        for uploaded_file in uploaded_files:
+                        for idx, uploaded_file in enumerate(uploaded_files):
                             file_base_name = os.path.splitext(os.path.basename(uploaded_file))[0]
+                            status_text.text(f"Processing {idx + 1} of {len(uploaded_files)}: {file_base_name}")
+                            
                             with open(uploaded_file, 'rb') as f:
                                 excel_path = process_file(f, reference_text, output_directory, file_base_name)
                                 if excel_path:
                                     generated_excel_paths.append(excel_path)
+                            progress_bar.progress((idx + 1) / len(uploaded_files))
+                        
+                        status_text.empty()
+                        progress_bar.empty()
+                        
                         if generated_excel_paths:
                             original_zip_name = os.path.splitext(uploaded_zip.name)[0]
                             zip_file_path = os.path.join(temp_dir, f"{original_zip_name}_Generated_Test_Scripts.zip")
+                            
                             with zipfile.ZipFile(zip_file_path, 'w') as zipf:
                                 for file_path in generated_excel_paths:
                                     zipf.write(file_path, os.path.basename(file_path))
+                            
                             with open(zip_file_path, 'rb') as f:
                                 zip_data = f.read()
                                 zip_b64 = base64.b64encode(zip_data).decode()
+                            
+                            st.success(f"✅ Successfully generated {len(generated_excel_paths)} test scripts!")
                             st.markdown(
                                 f"""
                                 <a href="data:application/zip;base64,{zip_b64}" 
                                 download="{original_zip_name}_Generated_Test_Scripts.zip" class="download-button">
-                                Download All Generated Test Scripts
+                                📥 Download All Generated Test Scripts
                                 </a>
                                 """,
                                 unsafe_allow_html=True
                             )
                         else:
-                            st.warning("No test scripts were generated.")
+                            st.error("❌ No test scripts were generated.")
                     else:
-                        st.warning("No supported files found in the ZIP file.")
+                        st.warning("⚠️ No supported files (PDF, TXT, DOCX) found in the ZIP file.")
+
+    # Footer
+    st.markdown("<div class='custom-spacing'></div>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style='text-align: center; color: #7f8c8d; padding: 1rem;'>
+            <p>🤖 Powered by AI | Built with Streamlit | SAP Test Script Generator v2.0</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 if __name__ == "__main__":
