@@ -92,9 +92,31 @@ st.markdown(
         color: #000000 !important;
     }
     
+    /* File uploader text */
+    .stFileUploader > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
     /* Warning and success messages */
     .stAlert {
         color: #000000 !important;
+    }
+
+    .stFileUploader button {
+        color: #ffffff !important;      /* White text */
+        background-color: #000000 !important; /* Black background */
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .stFileUploader button:hover {
+        background-color: #333333 !important; /* Dark gray on hover */
+        color: #ffffff !important;
+        transform: translateY(-2px);
     }
     </style>
     """,
