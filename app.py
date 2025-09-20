@@ -42,7 +42,7 @@ st.markdown(
         margin-bottom: 25px;
     }
 
-    /* Primary buttons, excluding the Generate Test Scripts button */
+    /* Primary buttons - ensure white text on black background */
     button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
         background-color: #000000 !important; /* Black background */
         color: #ffffff !important;           /* White text */
@@ -51,6 +51,12 @@ st.markdown(
         padding: 8px 16px !important;
         font-weight: 600 !important;
         transition: background-color 0.3s, transform 0.2s;
+    }
+
+    /* Form submit buttons - specifically target them */
+    .stForm button, .stForm button span {
+        background-color: #000000 !important;
+        color: #ffffff !important;
     }
 
     /* Hover effect */
@@ -97,10 +103,9 @@ st.markdown(
         color: #000000 !important;
     }
 
-    /* Fix specifically for the Generate Test Scripts button */
-    button:has(span:contains("Generate Test Scripts")) {
-        color: #ffffff !important; /* Ensure white text */
-        background-color: #000000 !important; /* Black background */
+    /* Ensure button text is always white - more specific selectors */
+    button span, div.stButton > button span, .stForm button span {
+        color: #ffffff !important;
     }
     </style>
     """,
