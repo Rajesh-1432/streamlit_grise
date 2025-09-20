@@ -25,7 +25,7 @@ st.markdown(
     /* General app background */
     .stApp {
         background-color: #ffffff !important; /* white background */
-        color: #000000; /* black text */
+        color: #000000 !important; /* black text */
     }
 
     /* Ensure all main text elements are black */
@@ -43,7 +43,7 @@ st.markdown(
     }
 
     /* Primary buttons - ensure white text on black background */
-    button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
+    button, form_submit_button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
         background-color: #000000 !important; /* Black background */
         color: #ffffff !important;           /* White text */
         border: none !important;
