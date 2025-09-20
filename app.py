@@ -94,6 +94,7 @@ st.markdown(
     
     /* File uploader text */
     .stFileUploader > div {
+        background-color: #ffffff !important;
         color: #000000 !important;
     }
     
