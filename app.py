@@ -43,7 +43,7 @@ st.markdown(
     }
 
     /* Primary buttons - ensure white text on black background */
-    button, form_submit_button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
+    button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
         background-color: #000000 !important; /* Black background */
         color: #ffffff !important;           /* White text */
         border: none !important;
@@ -53,8 +53,13 @@ st.markdown(
         transition: background-color 0.3s, transform 0.2s;
     }
 
-    /* Form submit buttons - specifically target them */
-    .stForm button, .stForm form_submit_button, .stForm button span {
+    /* Form submit buttons - specifically target them with multiple selectors */
+    .stForm button, 
+    .stForm button span,
+    div[data-testid="stForm"] button,
+    div[data-testid="stForm"] button span,
+    button[kind="primary"],
+    button[kind="primary"] span {
         background-color: #000000 !important;
         color: #ffffff !important;
     }
@@ -103,8 +108,22 @@ st.markdown(
         color: #000000 !important;
     }
 
-    /* Ensure button text is always white - more specific selectors */
-    button span, div.stButton > button span, .stForm button span {
+    /* Ensure button text is always white - comprehensive selectors */
+    button span, 
+    div.stButton > button span, 
+    .stForm button span,
+    div[data-testid="stForm"] button span,
+    button[kind="primary"] span,
+    button p,
+    button div,
+    .stForm button p,
+    .stForm button div {
+        color: #ffffff !important;
+    }
+
+    /* Additional fallback for all button elements */
+    button *, 
+    .stForm button * {
         color: #ffffff !important;
     }
     </style>
@@ -326,6 +345,7 @@ def main():
     if input_method == "Upload File":
         uploaded_files = st.file_uploader(" ", type=['pdf', 'txt', 'docx'], accept_multiple_files=True)
         if uploaded_files:
+            # Using st.form for the Generate Test Scripts button with unique ID
             with st.form(key="generate_form"):
                 submit_button = st.form_submit_button("Generate Test Scripts")
                 if submit_button:
