@@ -24,14 +24,14 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API")
 st.markdown(
     """
     <style>
-    /* Set app background to white and ensure text is black */
+    /* General app background */
     .stApp {
-        background-color: #ffffff !important; /* Pure white */
-        color: #000000 !important; /* Black text */
+        background-color: #ffffff !important; /* white background */
+        color: #000000 !important; /* black text */
     }
-    
-    /* Ensure main text elements are black, but exclude buttons */
-    .stApp p, .stApp div:not(.stButton):not(.download-button), .stApp span:not(.stButton span), .stApp label {
+
+    /* Ensure all main text elements are black */
+    .stApp p, .stApp span, .stApp div, .stApp label {
         color: #000000 !important;
     }
 
@@ -40,34 +40,32 @@ st.markdown(
         text-align: center;
         font-size: 2em;
         font-weight: 600;
-        color: #000000 !important; /* Black */
+        color: #000000 !important;
         margin-bottom: 25px;
     }
 
-    /* Primary buttons */
-    div.stButton > button {
-        display: block;
-        margin: 0 auto;
-        width: 200px;   /* Fixed width instead of % */
-        padding: 10px 20px;
-        font-weight: 600;
-        background-color: #000000 !important; /* Black */
-        color: #ffffff !important; /* White */
-        border: none;
-        border-radius: 6px;
+    /* Primary buttons, including file uploader and Streamlit buttons */
+    button, div.stButton > button, .stFileUploader button, [data-baseweb="button"] {
+        background-color: #000000 !important; /* Black background */
+        color: #ffffff !important;           /* White text */
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 8px 16px !important;
+        font-weight: 600 !important;
         transition: background-color 0.3s, transform 0.2s;
     }
 
-    div.stButton > button:hover {
-        background-color: #333333 !important; /* Dark Gray */
-        color: #ffffff !important; /* White */
+    /* Hover effect */
+    button:hover, div.stButton > button:hover, .stFileUploader button:hover, [data-baseweb="button"]:hover {
+        background-color: #333333 !important;
+        color: #ffffff !important;
         transform: translateY(-2px);
     }
 
     /* Download button */
     .download-button {
         display: block;
-        width: 250px;   /* Fixed width */
+        width: 250px;
         margin: 25px auto;
         padding: 10px 20px;
         color: #ffffff !important;
@@ -86,37 +84,15 @@ st.markdown(
         transform: translateY(-2px);
         text-decoration: none;
     }
-    
-    /* Ensure radio buttons and other form elements have proper contrast */
-    .stRadio > div {
+
+    /* Radio buttons & file uploader label */
+    .stRadio > div, .stFileUploader > label {
         color: #000000 !important;
     }
-    
-    /* File uploader text */
-    .stFileUploader > div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
-    /* Warning and success messages */
+
+    /* Alerts */
     .stAlert {
         color: #000000 !important;
-    }
-
-    .stFileUploader button {
-        color: #ffffff !important;      /* White text */
-        background-color: #000000 !important; /* Black background */
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-weight: 600;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-
-    .stFileUploader button:hover {
-        background-color: #333333 !important; /* Dark gray on hover */
-        color: #ffffff !important;
-        transform: translateY(-2px);
     }
     </style>
     """,
