@@ -92,12 +92,6 @@ st.markdown(
         color: #000000 !important;
     }
     
-    /* File uploader text */
-    .stFileUploader > div {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-    }
-    
     /* Warning and success messages */
     .stAlert {
         color: #000000 !important;
