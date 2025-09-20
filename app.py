@@ -25,7 +25,7 @@ st.markdown(
     /* General app background */
     .stApp {
         background-color: #ffffff !important; /* white background */
-        color: #000000 !important; /* black text */
+        color: #000000; /* black text */
     }
 
     /* Ensure all main text elements are black */
