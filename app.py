@@ -30,8 +30,8 @@ st.markdown(
         color: #000000 !important; /* Black text */
     }
     
-    /* Ensure all text elements are black on white background */
-    .stApp * {
+    /* Ensure main text elements are black, but exclude buttons */
+    .stApp p, .stApp div:not(.stButton):not(.download-button), .stApp span:not(.stButton span), .stApp label {
         color: #000000 !important;
     }
 
